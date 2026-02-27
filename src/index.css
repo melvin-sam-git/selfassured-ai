@@ -4,107 +4,93 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Self-Auditing LLM Platform Design System
-   Neural network-inspired dark theme with cyan/teal accents
+/* Self-Auditing LLM Platform — Academic Research Console
+   Clean, flat, light-themed design inspired by Jupyter/IDE panels.
    All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* Dark theme as primary - AI research platform aesthetic */
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
+    --background: 220 14% 96%;
+    --foreground: 224 71% 8%;
 
-    --card: 222 47% 8%;
-    --card-foreground: 210 40% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 8%;
 
-    --popover: 222 47% 10%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 8%;
 
-    /* Cyan/Teal primary - neural network / AI aesthetic */
-    --primary: 187 85% 53%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 47% 14%;
-    --secondary-foreground: 210 40% 96%;
+    --secondary: 220 14% 93%;
+    --secondary-foreground: 224 71% 8%;
 
-    --muted: 222 47% 12%;
-    --muted-foreground: 215 20% 60%;
+    --muted: 220 14% 93%;
+    --muted-foreground: 220 9% 43%;
 
-    --accent: 187 85% 43%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 220 14% 90%;
+    --accent-foreground: 224 71% 8%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 142 76% 46%;
-    --success-foreground: 222 47% 6%;
+    --success: 142 71% 35%;
+    --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 6%;
+    --warning-foreground: 224 71% 8%;
 
-    --border: 222 47% 18%;
-    --input: 222 47% 15%;
-    --ring: 187 85% 53%;
+    --border: 220 13% 82%;
+    --input: 220 13% 88%;
+    --ring: 221 83% 53%;
 
-    --radius: 0.75rem;
+    --radius: 0.25rem;
 
-    /* Agent colors for multi-agent visualization */
-    --agent-fact: 187 85% 53%;
-    --agent-bias: 280 65% 60%;
-    --agent-reasoning: 38 92% 50%;
-    --agent-confidence: 142 76% 46%;
+    /* Agent colors — muted academic palette */
+    --agent-fact: 221 83% 53%;
+    --agent-bias: 262 47% 50%;
+    --agent-reasoning: 25 75% 47%;
+    --agent-confidence: 142 71% 35%;
 
-    /* Gradient definitions */
-    --gradient-primary: linear-gradient(135deg, hsl(187 85% 53%) 0%, hsl(200 85% 45%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(187 85% 53% / 0.15) 0%, transparent 70%);
-    --gradient-card: linear-gradient(145deg, hsl(222 47% 10%) 0%, hsl(222 47% 8%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsl(222 47% 8%) 0%, hsl(222 47% 4%) 100%);
-
-    /* Shadows */
-    --shadow-glow: 0 0 40px hsl(187 85% 53% / 0.15);
-    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.3);
-    --shadow-button: 0 2px 16px hsl(187 85% 53% / 0.25);
-
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 187 85% 53%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 47% 12%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 47% 15%;
-    --sidebar-ring: 187 85% 53%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 224 71% 8%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 95%;
+    --sidebar-accent-foreground: 224 71% 8%;
+    --sidebar-border: 220 13% 82%;
+    --sidebar-ring: 221 83% 53%;
   }
 
   .dark {
-    /* Same as root - dark is our default */
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
-    --card: 222 47% 8%;
-    --card-foreground: 210 40% 96%;
-    --popover: 222 47% 10%;
-    --popover-foreground: 210 40% 96%;
-    --primary: 187 85% 53%;
-    --primary-foreground: 222 47% 6%;
-    --secondary: 222 47% 14%;
-    --secondary-foreground: 210 40% 96%;
-    --muted: 222 47% 12%;
+    --background: 224 71% 4%;
+    --foreground: 220 14% 96%;
+    --card: 224 47% 8%;
+    --card-foreground: 220 14% 96%;
+    --popover: 224 47% 10%;
+    --popover-foreground: 220 14% 96%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 224 47% 14%;
+    --secondary-foreground: 220 14% 96%;
+    --muted: 224 47% 12%;
     --muted-foreground: 215 20% 60%;
-    --accent: 187 85% 43%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 224 47% 16%;
+    --accent-foreground: 220 14% 96%;
     --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 222 47% 18%;
-    --input: 222 47% 15%;
-    --ring: 187 85% 53%;
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 187 85% 53%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 47% 12%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 47% 15%;
-    --sidebar-ring: 187 85% 53%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 224 47% 18%;
+    --input: 224 47% 15%;
+    --ring: 221 83% 53%;
+    --sidebar-background: 224 47% 5%;
+    --sidebar-foreground: 220 14% 96%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 47% 12%;
+    --sidebar-accent-foreground: 220 14% 96%;
+    --sidebar-border: 224 47% 18%;
+    --sidebar-ring: 221 83% 53%;
   }
 }
 
@@ -115,70 +101,11 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
   }
 
   code, pre {
     font-family: 'JetBrains Mono', monospace;
-  }
-}
-
-@layer utilities {
-  .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50;
-  }
-
-  .glow-primary {
-    box-shadow: var(--shadow-glow);
-  }
-
-  .gradient-primary {
-    background: var(--gradient-primary);
-  }
-
-  .gradient-glow {
-    background: var(--gradient-glow);
-  }
-
-  .text-gradient {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-glow {
-    0%, 100% {
-      box-shadow: 0 0 20px hsl(187 85% 53% / 0.3);
-    }
-    50% {
-      box-shadow: 0 0 40px hsl(187 85% 53% / 0.5);
-    }
-  }
-
-  .animate-audit-flow {
-    animation: audit-flow 3s ease-in-out infinite;
-  }
-
-  @keyframes audit-flow {
-    0%, 100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    50% {
-      transform: translateX(10px);
-      opacity: 0.7;
-    }
-  }
-
-  .neural-grid {
-    background-image: 
-      linear-gradient(hsl(187 85% 53% / 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(187 85% 53% / 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
   }
 }
