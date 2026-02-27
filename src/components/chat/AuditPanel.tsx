@@ -1,174 +1,113 @@
 import { AuditData } from '@/types/audit';
-import { Search, Shield, Brain, Activity, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
+import { CheckCircle, XCircle } from 'lucide-react';
 
 interface AuditPanelProps {
   auditData: AuditData;
 }
 
-const agentIcons = {
-  'fact-checking': Search,
-  'bias-safety': Shield,
-  'reasoning': Brain,
-  'confidence': Activity,
-};
-
-const agentColors = {
-  'fact-checking': 'agent-fact',
-  'bias-safety': 'agent-bias',
-  'reasoning': 'agent-reasoning',
-  'confidence': 'agent-confidence',
-};
-
 export function AuditPanel({ auditData }: AuditPanelProps) {
   return (
-    <div className="glass-card rounded-xl p-6 space-y-6 animate-fade-in">
-      {/* Audit Flow Visualization */}
-      <div className="flex items-center justify-between text-xs font-mono">
-        {['Prompt', 'Draft', 'Audit', 'Fix', 'Verify', 'Final'].map((step, index) => (
-          <div key={step} className="flex items-center">
-            <div className={`px-3 py-1.5 rounded-lg ${
-              index === 5 ? 'gradient-primary text-primary-foreground' : 'bg-secondary'
-            }`}>
-              {step}
-            </div>
-            {index < 5 && <ArrowRight className="w-4 h-4 mx-2 text-muted-foreground" />}
-          </div>
-        ))}
-      </div>
-
+    <div className="space-y-4 text-sm">
       {/* Module 1: Initial Response */}
-      <div className="space-y-2">
-        <h4 className="text-sm font-semibold text-primary flex items-center gap-2">
-          <span className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center text-xs">1</span>
-          Initial Response Generation
+      <section>
+        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+          Module 1 — Initial Draft (R₀)
         </h4>
-        <p className="text-xs text-muted-foreground font-mono">
-          R₀ = LLM(Q) — Draft hypothesis generated
-        </p>
-        <div className="bg-secondary/50 rounded-lg p-3 text-sm max-h-32 overflow-y-auto">
+        <div className="border border-border rounded p-2 text-xs font-mono bg-background max-h-24 overflow-y-auto">
           {auditData.initialResponse}
         </div>
-      </div>
+      </section>
 
-      {/* Module 2: Multi-Agent Auditing */}
-      <div className="space-y-4">
-        <h4 className="text-sm font-semibold text-primary flex items-center gap-2">
-          <span className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center text-xs">2</span>
-          Multi-Agent Auditing Layer
+      {/* Module 2: Agent Results Table */}
+      <section>
+        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+          Module 2 — Multi-Agent Audit Results
         </h4>
-        <p className="text-xs text-muted-foreground font-mono">
-          Aᵢ = (Cᵢ, sᵢ) where Cᵢ = critique, sᵢ ∈ [0,1] = confidence
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {auditData.agents.map((agent, index) => {
-            const Icon = agentIcons[agent.agentType];
-            const colorClass = agentColors[agent.agentType];
-
-            return (
-              <div 
-                key={index}
-                className="border border-border rounded-lg p-4 space-y-3"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-8 h-8 rounded-lg bg-${colorClass}/20 flex items-center justify-center`}>
-                      <Icon className={`w-4 h-4 text-${colorClass}`} />
-                    </div>
-                    <div>
-                      <h5 className="font-medium text-sm">{agent.name}</h5>
-                      <p className="text-xs text-muted-foreground">{agent.role}</p>
-                    </div>
-                  </div>
+        <table className="w-full text-xs border border-border rounded">
+          <thead>
+            <tr className="bg-muted text-muted-foreground">
+              <th className="text-left p-2 font-medium border-b border-border">Agent</th>
+              <th className="text-center p-2 font-medium border-b border-border">Pass</th>
+              <th className="text-right p-2 font-medium border-b border-border">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {auditData.agents.map((agent, i) => (
+              <tr key={i} className="border-b border-border last:border-0">
+                <td className="p-2 font-mono">{agent.name}</td>
+                <td className="p-2 text-center">
                   {agent.passed ? (
-                    <CheckCircle className="w-5 h-5 text-success" />
+                    <CheckCircle className="w-3.5 h-3.5 text-success inline-block" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-destructive" />
+                    <XCircle className="w-3.5 h-3.5 text-destructive inline-block" />
                   )}
-                </div>
+                </td>
+                <td className="p-2 text-right font-mono">{(agent.score * 100).toFixed(1)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span>Confidence Score (sᵢ)</span>
-                    <span className="font-mono">{(agent.score * 100).toFixed(1)}%</span>
-                  </div>
-                  <Progress value={agent.score * 100} className="h-2" />
-                </div>
-
-                <p className="text-xs text-muted-foreground">{agent.critique}</p>
-
-                <div className="space-y-1">
-                  {agent.details.map((detail, i) => (
-                    <p key={i} className="text-xs flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      {detail}
-                    </p>
+        {/* Critiques */}
+        <div className="mt-2 space-y-2">
+          {auditData.agents.map((agent, i) => (
+            <div key={i} className="border border-border rounded p-2">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase">{agent.name}</p>
+              <p className="text-xs text-foreground mt-0.5">{agent.critique}</p>
+              {agent.details.length > 0 && (
+                <ul className="mt-1 space-y-0.5">
+                  {agent.details.map((d, j) => (
+                    <li key={j} className="text-[11px] text-muted-foreground">— {d}</li>
                   ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Module 4: Iterative Corrections */}
-      <div className="space-y-3">
-        <h4 className="text-sm font-semibold text-primary flex items-center gap-2">
-          <span className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center text-xs">4</span>
-          Iterative Correction Engine
-        </h4>
-        <p className="text-xs text-muted-foreground font-mono">
-          R₁ = LLM(Q, R₀, D) → R₀ → R₁ → R₂ → ... → Rᶠ
-        </p>
-
-        <div className="flex items-center gap-2 overflow-x-auto pb-2">
-          {auditData.iterations.map((iter, index) => (
-            <div key={index} className="flex items-center">
-              <div className={`px-3 py-2 rounded-lg ${
-                index === auditData.iterations.length - 1 
-                  ? 'gradient-primary text-primary-foreground' 
-                  : 'bg-secondary'
-              } flex-shrink-0`}>
-                <div className="text-xs font-mono">R{index}</div>
-                <div className="text-xs opacity-70">{(iter.confidence * 100).toFixed(0)}%</div>
-              </div>
-              {index < auditData.iterations.length - 1 && (
-                <ArrowRight className="w-4 h-4 mx-2 text-muted-foreground flex-shrink-0" />
+                </ul>
               )}
             </div>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* Module 4: Iterations */}
+      <section>
+        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+          Module 4 — Correction Iterations
+        </h4>
+        <div className="flex gap-1 font-mono text-xs">
+          {auditData.iterations.map((iter, i) => (
+            <div
+              key={i}
+              className={`px-2 py-1 border rounded text-center ${
+                i === auditData.iterations.length - 1
+                  ? 'border-primary bg-primary/10 text-primary'
+                  : 'border-border'
+              }`}
+            >
+              <div>R{i}</div>
+              <div className="text-[10px]">{(iter.confidence * 100).toFixed(0)}%</div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Module 5: Final Validation */}
-      <div className="space-y-3">
-        <h4 className="text-sm font-semibold text-primary flex items-center gap-2">
-          <span className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center text-xs">5</span>
-          Final Validation
+      <section>
+        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+          Module 5 — Final Validation
         </h4>
-        <p className="text-xs text-muted-foreground font-mono">
-          Confidence(Rᶠ) ≥ τ → Release to user
-        </p>
-
-        <div className="flex items-center justify-between p-4 rounded-lg border border-success/30 bg-success/5">
+        <div className={`border rounded p-2 flex justify-between items-center text-xs ${
+          auditData.passedThreshold ? 'border-success/40 bg-success/5' : 'border-destructive/40 bg-destructive/5'
+        }`}>
           <div>
-            <p className="text-sm font-medium">Final Confidence Score</p>
-            <p className="text-xs text-muted-foreground">
-              Threshold τ = {(auditData.threshold * 100).toFixed(0)}%
-            </p>
+            <span className="text-muted-foreground">Threshold τ = </span>
+            <span className="font-mono">{(auditData.threshold * 100).toFixed(0)}%</span>
           </div>
-          <div className="text-right">
-            <p className="text-2xl font-bold text-success">
-              {(auditData.finalConfidence * 100).toFixed(1)}%
-            </p>
-            <p className="text-xs text-success">
-              {auditData.passedThreshold ? '✓ Passed' : '✗ Failed'}
-            </p>
+          <div className="font-mono font-semibold">
+            {(auditData.finalConfidence * 100).toFixed(1)}%
+            <span className="ml-1 text-[10px]">
+              {auditData.passedThreshold ? '✓ PASS' : '✗ FAIL'}
+            </span>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
