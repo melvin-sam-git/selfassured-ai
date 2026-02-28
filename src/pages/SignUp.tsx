@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { FlaskConical } from 'lucide-react';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -41,15 +42,18 @@ export default function SignUp() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-8">
       <div className="w-full max-w-sm">
-        <h1 className="text-lg font-semibold text-foreground mb-1">Self-Auditing LLM</h1>
+        <div className="flex items-center gap-2 mb-1">
+          <FlaskConical className="w-4 h-4 text-primary" />
+          <h1 className="text-base font-semibold text-foreground">Self-Auditing LLM</h1>
+        </div>
         <p className="text-xs text-muted-foreground mb-6">Create an account to access the research console</p>
 
-        <div className="border border-border rounded bg-card p-6">
+        <div className="border border-border rounded-md bg-card p-6">
           <h2 className="text-sm font-semibold mb-4 text-foreground">Create Account</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1">
-              <Label htmlFor="fullName" className="text-xs">Full Name</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="fullName" className="text-xs font-medium">Full Name</Label>
               <Input
                 id="fullName"
                 type="text"
@@ -61,8 +65,8 @@ export default function SignUp() {
               />
             </div>
 
-            <div className="space-y-1">
-              <Label htmlFor="email" className="text-xs">Email</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-xs font-medium">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -74,8 +78,8 @@ export default function SignUp() {
               />
             </div>
 
-            <div className="space-y-1">
-              <Label htmlFor="password" className="text-xs">Password</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-xs font-medium">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -89,13 +93,13 @@ export default function SignUp() {
             </div>
 
             <Button type="submit" className="w-full" size="sm" disabled={isLoading}>
-              {isLoading ? 'Creating account...' : 'Create Account'}
+              {isLoading ? 'Creating account…' : 'Create Account'}
             </Button>
           </form>
 
           <p className="text-center mt-4 text-xs text-muted-foreground">
             Already have an account?{' '}
-            <Link to="/login" className="text-primary hover:underline">Sign in</Link>
+            <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link>
           </p>
         </div>
       </div>

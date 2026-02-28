@@ -12,33 +12,42 @@ export function ChatMessage({ message, isSelected, onSelect }: ChatMessageProps)
 
   return (
     <div
-      className={`border rounded p-3 text-sm cursor-pointer transition-colors ${
-        isSelected
-          ? 'border-primary bg-primary/5'
-          : 'border-border bg-card hover:border-muted-foreground/30'
+      className={`border rounded-md p-4 text-sm transition-colors ${
+        isAssistant
+          ? isSelected
+            ? 'border-primary/40 bg-card shadow-sm'
+            : 'border-border bg-card hover:border-primary/30 cursor-pointer'
+          : 'border-primary/20 bg-primary/[0.04]'
       }`}
       onClick={onSelect}
     >
-      <div className="flex items-center gap-2 mb-1">
-        <span className="text-[10px] font-mono uppercase tracking-wide text-muted-foreground">
-          {isAssistant ? 'assistant' : 'user'}
+      <div className="flex items-center gap-2 mb-2">
+        <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider ${
+          isAssistant ? 'text-muted-foreground' : 'text-primary'
+        }`}>
+          <span className={`w-2 h-2 rounded-full ${isAssistant ? 'bg-muted-foreground/40' : 'bg-primary'}`} />
+          {isAssistant ? 'Assistant' : 'You'}
         </span>
-        <span className="text-[10px] text-muted-foreground">
+        <span className="text-[11px] text-muted-foreground/60">
           {message.timestamp.toLocaleTimeString()}
         </span>
         {isAssistant && message.auditData && (
-          <span className="text-[10px] font-mono text-primary">
-            [audited — {(message.auditData.finalConfidence * 100).toFixed(0)}% conf]
+          <span className={`ml-auto text-[11px] font-mono px-2 py-0.5 rounded ${
+            message.auditData.passedThreshold
+              ? 'bg-success/10 text-success'
+              : 'bg-warning/10 text-warning'
+          }`}>
+            {message.auditData.passedThreshold ? 'PASS' : 'WARN'} · {(message.auditData.finalConfidence * 100).toFixed(0)}%
           </span>
         )}
       </div>
 
-      <div className="prose prose-sm max-w-none text-foreground">
+      <div className="prose prose-sm max-w-none text-foreground leading-relaxed">
         <ReactMarkdown>{message.content}</ReactMarkdown>
       </div>
 
       {message.isStreaming && (
-        <span className="inline-block w-1.5 h-3.5 bg-foreground ml-0.5" />
+        <span className="inline-block w-1.5 h-4 bg-primary ml-0.5 animate-pulse" />
       )}
     </div>
   );
