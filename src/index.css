@@ -4,101 +4,93 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Self-Auditing LLM Platform — Developer Tool / Research Console
-   Warm, functional palette inspired by VS Code, GitHub, Notion.
-   All colors in HSL.
+/* Self-Auditing LLM Platform — Academic Research Console
+   Clean, flat, light-themed design inspired by Jupyter/IDE panels.
+   All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 220 13% 10%;
+    --background: 220 14% 96%;
+    --foreground: 224 71% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 10%;
+    --card-foreground: 224 71% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 10%;
+    --popover-foreground: 224 71% 8%;
 
-    --primary: 217 91% 60%;
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 16% 93%;
-    --secondary-foreground: 220 13% 10%;
+    --secondary: 220 14% 93%;
+    --secondary-foreground: 224 71% 8%;
 
-    --muted: 210 16% 95%;
-    --muted-foreground: 215 14% 46%;
+    --muted: 220 14% 93%;
+    --muted-foreground: 220 9% 43%;
 
-    --accent: 210 16% 92%;
-    --accent-foreground: 220 13% 10%;
+    --accent: 220 14% 90%;
+    --accent-foreground: 224 71% 8%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 142 71% 45%;
+    --success: 142 71% 35%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 50%;
-    --warning-foreground: 220 13% 10%;
+    --warning-foreground: 224 71% 8%;
 
-    --border: 216 12% 84%;
-    --input: 216 12% 90%;
-    --ring: 217 91% 60%;
+    --border: 220 13% 82%;
+    --input: 220 13% 88%;
+    --ring: 221 83% 53%;
 
-    --radius: 0.375rem;
+    --radius: 0.25rem;
 
-    /* Agent colors — functional, muted, specific */
-    --agent-fact: 217 91% 60%;
-    --agent-safety: 38 92% 50%;
-    --agent-reasoning: 168 76% 42%;
-    --agent-confidence: 142 71% 45%;
+    /* Agent colors — muted academic palette */
+    --agent-fact: 221 83% 53%;
+    --agent-bias: 262 47% 50%;
+    --agent-reasoning: 25 75% 47%;
+    --agent-confidence: 142 71% 35%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 13% 10%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-foreground: 224 71% 8%;
+    --sidebar-primary: 221 83% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 16% 96%;
-    --sidebar-accent-foreground: 220 13% 10%;
-    --sidebar-border: 216 12% 84%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 220 14% 95%;
+    --sidebar-accent-foreground: 224 71% 8%;
+    --sidebar-border: 220 13% 82%;
+    --sidebar-ring: 221 83% 53%;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 20% 95%;
-    --card: 222 47% 9%;
-    --card-foreground: 210 20% 95%;
-    --popover: 222 47% 10%;
-    --popover-foreground: 210 20% 95%;
-    --primary: 217 91% 60%;
+    --background: 224 71% 4%;
+    --foreground: 220 14% 96%;
+    --card: 224 47% 8%;
+    --card-foreground: 220 14% 96%;
+    --popover: 224 47% 10%;
+    --popover-foreground: 220 14% 96%;
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 222 47% 14%;
-    --secondary-foreground: 210 20% 95%;
-    --muted: 222 47% 13%;
-    --muted-foreground: 215 16% 57%;
-    --accent: 222 47% 16%;
-    --accent-foreground: 210 20% 95%;
-    --destructive: 0 84% 60%;
+    --secondary: 224 47% 14%;
+    --secondary-foreground: 220 14% 96%;
+    --muted: 224 47% 12%;
+    --muted-foreground: 215 20% 60%;
+    --accent: 224 47% 16%;
+    --accent-foreground: 220 14% 96%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 210 20% 95%;
-    --border: 222 47% 18%;
-    --input: 222 47% 15%;
-    --ring: 217 91% 60%;
-    --agent-fact: 217 91% 60%;
-    --agent-safety: 38 92% 50%;
-    --agent-reasoning: 168 76% 42%;
-    --agent-confidence: 142 71% 45%;
-    --sidebar-background: 222 47% 7%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 217 91% 60%;
+    --border: 224 47% 18%;
+    --input: 224 47% 15%;
+    --ring: 221 83% 53%;
+    --sidebar-background: 224 47% 5%;
+    --sidebar-foreground: 220 14% 96%;
+    --sidebar-primary: 221 83% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 47% 13%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 222 47% 18%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 224 47% 12%;
+    --sidebar-accent-foreground: 220 14% 96%;
+    --sidebar-border: 224 47% 18%;
+    --sidebar-ring: 221 83% 53%;
   }
 }
 
@@ -111,7 +103,6 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 14px;
-    line-height: 1.5;
   }
 
   code, pre {
