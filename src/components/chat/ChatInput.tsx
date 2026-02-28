@@ -32,15 +32,15 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Enter query for multi-agent evaluation..."
-        className="min-h-[40px] max-h-[120px] resize-none text-sm bg-background border-border"
+        placeholder="Enter query for multi-agent evaluation…"
+        className="min-h-[44px] max-h-[120px] resize-none text-sm bg-background border-border"
         disabled={isLoading}
       />
       <Button
         type="submit"
         disabled={!input.trim() || isLoading}
         size="sm"
-        className="h-10 w-10 flex-shrink-0"
+        className="h-11 w-11 flex-shrink-0"
       >
         {isLoading ? (
           <Loader2 className="w-4 h-4 animate-spin" />

@@ -76,7 +76,7 @@ export default {
         },
         agent: {
           fact: "hsl(var(--agent-fact))",
-          bias: "hsl(var(--agent-bias))",
+          safety: "hsl(var(--agent-safety))",
           reasoning: "hsl(var(--agent-reasoning))",
           confidence: "hsl(var(--agent-confidence))",
         },
