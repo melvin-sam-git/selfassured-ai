@@ -31,6 +31,11 @@ export function ChatMessage({ message, isSelected, onSelect }: ChatMessageProps)
             [audited — {(message.auditData.finalConfidence * 100).toFixed(0)}% conf]
           </span>
         )}
+        {isAssistant && !message.auditData && (
+          <span className="text-[10px] font-mono text-muted-foreground">
+            [invalid query — audit skipped]
+          </span>
+        )}
       </div>
 
       <div className="prose prose-sm max-w-none text-foreground">
