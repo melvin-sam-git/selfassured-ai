@@ -35,7 +35,6 @@ interface AuditData {
   };
 }
 
-// Multi-agent prompts for auditing
 const AGENT_PROMPTS = {
   factChecker: `You are a Fact-Checking Agent. Your role is to verify claims and detect hallucinations.
 Analyze the response and:
@@ -66,6 +65,22 @@ Analyze the response and:
 Respond in JSON format: { "critique": "your critique", "score": 0.0-1.0, "passed": true/false, "details": ["detail1", "detail2"] }`,
 };
 
+const VALIDITY_PROMPT = `You are an input validation agent. Determine if the user's query is a meaningful, answerable question or request.
+
+A query is INVALID if it is:
+- Random characters, keyboard mashing, or gibberish (e.g. "asdfjkl", "ohdkj aodi fio")
+- Empty or only whitespace/punctuation
+- Not in any recognizable language
+- Has no discernible intent or meaning
+
+A query is VALID if it:
+- Asks a question (even a simple one)
+- Makes a request (even informal like "tell me about X")
+- Contains recognizable words forming a coherent thought
+- Is in any human language
+
+Respond ONLY with JSON: { "valid": true } or { "valid": false, "reason": "brief reason" }`;
+
 async function callAI(messages: any[], apiKey: string) {
   const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
     method: "POST",
@@ -87,6 +102,23 @@ async function callAI(messages: any[], apiKey: string) {
 
   const data = await response.json();
   return data.choices[0].message.content;
+}
+
+async function checkQueryValidity(query: string, apiKey: string): Promise<{ valid: boolean; reason?: string }> {
+  try {
+    const result = await callAI([
+      { role: 'system', content: VALIDITY_PROMPT },
+      { role: 'user', content: query }
+    ], apiKey);
+
+    const jsonMatch = result.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]);
+    }
+  } catch (e) {
+    console.error("Validity check error:", e);
+  }
+  return { valid: true }; // default to valid on error
 }
 
 async function runAgentAudit(
@@ -115,7 +147,6 @@ async function runAgentAudit(
       { role: 'user', content: `User Query: ${prompt}\n\nResponse to audit: ${response}` }
     ], apiKey);
 
-    // Parse JSON from response
     const jsonMatch = result.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
@@ -132,7 +163,6 @@ async function runAgentAudit(
     console.error(`Agent ${agentType} error:`, error);
   }
 
-  // Default fallback
   return {
     agentType,
     ...agentNames[agentType],
@@ -157,6 +187,22 @@ serve(async (req) => {
     }
 
     const userMessage = messages[messages.length - 1].content;
+
+    // MODULE 0: Input Validation
+    console.log("Module 0: Validating input query...");
+    const validity = await checkQueryValidity(userMessage, LOVABLE_API_KEY);
+
+    if (!validity.valid) {
+      // Return a helpful response with null audit data
+      const invalidResponse = `Your input doesn't appear to be a valid query. It looks like random or nonsensical text. Please enter a meaningful question or request so the system can process it properly.`;
+
+      return new Response(JSON.stringify({
+        response: invalidResponse,
+        auditData: null,
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     // MODULE 1: Initial Response Generation (R₀ = LLM(Q))
     console.log("Module 1: Generating initial response...");
@@ -190,7 +236,6 @@ serve(async (req) => {
     let currentResponse = initialResponse;
     let currentConfidence = aggregateConfidence;
 
-    // Perform correction if needed
     if (!passedThreshold || agentResults.some(a => !a.passed)) {
       const corrections = agentResults
         .filter(a => !a.passed || a.score < 0.8)
@@ -219,7 +264,6 @@ serve(async (req) => {
     const finalConfidence = currentConfidence;
     const finalResponse = currentResponse;
 
-    // Calculate outcomes
     const outcomes = {
       hallucinationReduction: Math.min(0.95, 0.6 + agentResults[0].score * 0.35),
       factualAccuracyImprovement: Math.min(0.92, 0.55 + agentResults[0].score * 0.4),
